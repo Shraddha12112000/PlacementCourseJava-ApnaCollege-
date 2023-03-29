@@ -224,6 +224,47 @@ public class Arrays {
         System.out.print(maxSum);
     }
 
+    public static int trappedRainWater(int height[]) {
+        //calculate left max boundary - array
+        int leftMax[] = new int[height.length];
+        leftMax[0] = height[0];
+        for (int i = 1; i < height.length; i++) {
+            leftMax[i] = Math.max(height[i], leftMax[i - 1]);
+        }
+        //calculate right max boundary - array
+        int rightMax[] = new int[height.length];
+        rightMax[height.length - 1] = height[height.length - 1];
+        for (int j = height.length - 2; j >= 0; j--) {
+            rightMax[j] = Math.max(height[j], rightMax[j + 1]);
+        }
+        int trappedRainWater = 0;
+
+        //loop
+        for (int i = 0; i < height.length; i++) {
+            //waterLevel=min(leftmax,rightmax)
+            int waterLevel = Math.min(leftMax[i], rightMax[i]);
+
+            //trapped water = waterLevel - height[i]
+            trappedRainWater += waterLevel - height[i];
+        }
+        return trappedRainWater;
+
+    }
+
+    public static int buyAndSellStocks(int prices[]) {
+        int buyPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (buyPrice < prices[i]) {
+                int profit = prices[i] - buyPrice;//today's profit
+                maxProfit = Math.max(maxProfit, profit); //global profit
+            } else {
+                buyPrice = prices[i];
+            }
+        }
+        return maxProfit;
+    }
+
 
 
     public static void main(String args[]) {
@@ -269,9 +310,11 @@ public class Arrays {
         //int[] nums = {2,7,11,15};
         //int target = 9;
         //System.out.println(twoSum(nums, target));
-        int[] numbers = { -1, -2, -3, -4, -5 };
-        int maxSubSum = kadanes(numbers);
-        System.out.print(maxSubSum);
+        //int[] numbers = { -1, -2, -3, -4, -5 };
+        //int maxSubSum = kadanes(numbers);
+        //int height[] = { 4, 2, 0, 6,3,2,5};
+        int prices[] = { 7, 1, 5, 3, 6, 4 };
+        System.out.print(buyAndSellStocks(prices));
         //prefixArrayApproach(numbers);
         //printSubarrays(numbers);
 
